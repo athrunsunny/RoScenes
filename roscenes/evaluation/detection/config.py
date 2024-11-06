@@ -28,36 +28,16 @@ class ThresholdMetric(Enum):
 
 @dataclass
 class DetectionEvaluationConfig:
-    # classes: list[str]
-    # matchingThreshold: list[float]
-    # tpThreshold: float
-    # thresholdMetric: ThresholdMetric
-    # maxBoxesPerSample: int
-    # scoreFilter: float
-    # rangeFilter: tuple[float, float, float, float, float, float]
-    # handlers: list[str]
-    #
-    # _handlerInstances: list[Handler] = field(init=False)
-    def __init__(self, classes: list, matchingThreshold: list, tpThreshold: float,
-                 thresholdMetric: 'ThresholdMetric', maxBoxesPerSample: int,
-                 scoreFilter: float, rangeFilter: tuple, handlers: list):
-        self.classes = classes
-        self.matchingThreshold = matchingThreshold
-        self.tpThreshold = tpThreshold
-        self.thresholdMetric = thresholdMetric
-        self.maxBoxesPerSample = maxBoxesPerSample
-        self.scoreFilter = scoreFilter
-        self.rangeFilter = rangeFilter
-        self.handlers = handlers
-        # 初始化_handlerInstances列表
-        self._handlerInstances = []
+    classes: list[str]
+    matchingThreshold: list[float]
+    tpThreshold: float
+    thresholdMetric: ThresholdMetric
+    maxBoxesPerSample: int
+    scoreFilter: float
+    rangeFilter: tuple[float, float, float, float, float, float]
+    handlers: list[str]
 
-    @property
-    def handlerInstances(self) -> list:
-        if not self._handlerInstances:
-            # 如果_handlerInstances为空，则根据handlers属性创建实例
-            self._handlerInstances = [handler() for handler in self.handlers]
-        return self._handlerInstances
+    _handlerInstances: list[Handler] = field(init=False)
 
     def __post_init__(self):
         # Check parameters are valid.
