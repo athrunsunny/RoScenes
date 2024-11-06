@@ -37,11 +37,8 @@ class TPResult:
 @dataclass
 class DetectionResult:
     """Result for a single frame."""
-    # ap: APResult
-    # tps: list[TPResult]
-    def __init__(self, ap, tps):
-        self.ap = ap
-        self.tps = tps
+    ap: APResult
+    tps: list[TPResult]
 
     @staticmethod
     def nothing(tpLength):
@@ -99,40 +96,19 @@ class DetectionResult:
 
 @dataclass
 class ThresholdDetectionResult:
-    # label: int
-    # results: dict[float, DetectionResult]
-    # isIgnored: bool = False
-    # apWeight: float = field(init=False)
-    def __init__(self, label: int, results: dict, isIgnored: bool = False):
-        self.label = label
-        self.results = results
-        self.isIgnored = isIgnored
-        # 在这里不初始化 apWeight，而是在 __post_init__ 中根据条件设置
-        self._apWeight = None  # 使用一个私有变量来存储 apWeight 的值
-
-    @property
-    def apWeight(self) -> float:
-        if self._apWeight is None:
-            raise AttributeError("apWeight has not been initialized.")
-        return self._apWeight
+    label: int
+    results: dict[float, DetectionResult]
+    isIgnored: bool = False
+    apWeight: float = field(init=False)
 
     def __post_init__(self):
         if self.isIgnored:
-            self._apWeight = np.nan
+            self.apWeight = np.nan
             return
         apWeights = [r.apWeight for r in self.results.values() if r.hasTP]
         if not np.allclose(apWeights, np.mean(apWeights)):
-            raise RuntimeError("AP weights are not consistent.")
-        self._apWeight = apWeights[0]
-
-    # def __post_init__(self):
-    #     if self.isIgnored:
-    #         self.apWeight = np.nan
-    #         return
-    #     apWeights = [r.apWeight for r in self.results.values() if r.hasTP]
-    #     if not np.allclose(apWeights, np.mean(apWeights)):
-    #         raise RuntimeError
-    #     self.apWeight = apWeights[0]
+            raise RuntimeError
+        self.apWeight = apWeights[0]
 
     def ap(self, threshold: float):
         if self.isIgnored:
@@ -170,15 +146,10 @@ class ThresholdDetectionResult:
 
 @dataclass
 class ClassWiseDetectionResult:
-    # values: dict[str, tuple[float, npt.NDArray[np.float64]]]
-    # apWeight: float
-    # raw: dict[str, ThresholdDetectionResult]
-    # tpNames: list[str]
-    def __init__(self, values: dict, apWeight: float, raw: dict, tpNames: list):
-        self.values = values
-        self.apWeight = apWeight
-        self.raw = raw
-        self.tpNames = tpNames
+    values: dict[str, tuple[float, npt.NDArray[np.float64]]]
+    apWeight: float
+    raw: dict[str, ThresholdDetectionResult]
+    tpNames: list[str]
 
     def __str__(self):
         table = list()
