@@ -49,7 +49,7 @@ class Scene:
     # used for frame image path generation.
     rootDir: Path
     """The path where this scene locates."""
-    clips: list[Clip]
+    clips: list#[Clip]
     """All clips this scene has."""
 
     # used for indexing, [N, 2], N = length of all frames, first is clipIdx, second is offset
@@ -143,7 +143,7 @@ class Scene:
 
 @dataclass
 class ConcatScene:
-    scenes: list[Scene]
+    scenes: list#[Scene]
 
     # [N, 3], scene idx, clip idx, offset
     _indexing: np.ndarray = field(init=False)
