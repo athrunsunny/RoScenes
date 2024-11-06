@@ -28,16 +28,17 @@ class ThresholdMetric(Enum):
 
 @dataclass
 class DetectionEvaluationConfig:
-    classes: list[str]
-    matchingThreshold: list[float]
+    classes: list#[str]
+    matchingThreshold: list#[float]
     tpThreshold: float
     thresholdMetric: ThresholdMetric
     maxBoxesPerSample: int
     scoreFilter: float
-    rangeFilter: tuple[float, float, float, float, float, float]
-    handlers: list[str]
+    rangeFilter: tuple#[float, float, float, float, float, float]
+    handlers: list#[str]
 
-    _handlerInstances: list[Handler] = field(init=False)
+    # _handlerInstances: list[Handler] = field(init=False)
+    _handlerInstances: list = field(init=False)
 
     def __post_init__(self):
         # Check parameters are valid.
