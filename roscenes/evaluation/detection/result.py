@@ -38,7 +38,7 @@ class TPResult:
 class DetectionResult:
     """Result for a single frame."""
     ap: APResult
-    tps: list[TPResult]
+    tps: list#[TPResult]
 
     @staticmethod
     def nothing(tpLength):
@@ -97,7 +97,7 @@ class DetectionResult:
 @dataclass
 class ThresholdDetectionResult:
     label: int
-    results: dict[float, DetectionResult]
+    results: dict#[float, DetectionResult]
     isIgnored: bool = False
     apWeight: float = field(init=False)
 
@@ -146,10 +146,10 @@ class ThresholdDetectionResult:
 
 @dataclass
 class ClassWiseDetectionResult:
-    values: dict[str, tuple[float, npt.NDArray[np.float64]]]
+    values: dict#[str, tuple[float, npt.NDArray[np.float64]]]
     apWeight: float
-    raw: dict[str, ThresholdDetectionResult]
-    tpNames: list[str]
+    raw: dict#[str, ThresholdDetectionResult]
+    tpNames: list#[str]
 
     def __str__(self):
         table = list()
