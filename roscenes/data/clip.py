@@ -58,7 +58,7 @@ class Clip:
     """The 13-digit Unix timestamp represents start frame."""
     endTimeStamp: int
     """The 13-digit Unix timestamp represents end frame."""
-    sequence: list[str]
+    sequence: list#[str]
     """All frame's token from start to end."""
 
     bound: npt.NDArray[np.float64]
